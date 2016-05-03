@@ -6,13 +6,14 @@ import os.path
 import shutil
 
 numUsers=3
-keyFileName="./guest-key"
+keyFileName="./key/guest-key"
 
 def addParserOptions(parser):
   """Adds command line options
   """
   
-  pass
+  parser.add_option("-n",dest="numUsers"
+    ,help="Specify the number of users to create/delete [default: %default].",default=1)
 def parseOptions(actions):
   """Parses command line options
   
