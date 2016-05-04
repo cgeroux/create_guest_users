@@ -5,14 +5,13 @@ from subprocess import Popen,PIPE
 import os.path
 import shutil
 
-numUsers=3
 keyFileName="./key/guest-key"
 
 def addParserOptions(parser):
   """Adds command line options
   """
   
-  parser.add_option("-n",dest="numUsers"
+  parser.add_option("-n",dest="numUsers",type="int"
     ,help="Specify the number of users to create/delete [default: %default].",default=1)
 def parseOptions(actions):
   """Parses command line options
@@ -34,6 +33,7 @@ def main():
 
   #parse command line options
   (options,args)=parseOptions(actions)
+  numUsers=options.numUsers
   
   #check we got the expected number of arguments
   if (len(args)!=1):
@@ -52,6 +52,14 @@ def main():
     if os.path.isfile(keyFileName+".pub"):
       os.remove(keyFileName+".pub")
     cmd=["ssh-keygen","-q","-t","rsa","-C","guest","-f",keyFileName,"-N",'']
+    print("cmd=",cmd)
+    process=Popen(cmd,stdout=PIPE,stderr=PIPE)
+    stdout,stderr=process.communicate()
+    print("stdout=",stdout)
+    print("stderr=",stderr)
+    
+    #change permissions on the file to allow reading
+    cmd=["chmod","0644",keyFileName]
     print("cmd=",cmd)
     process=Popen(cmd,stdout=PIPE,stderr=PIPE)
     stdout,stderr=process.communicate()
