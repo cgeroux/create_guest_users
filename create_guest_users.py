@@ -45,6 +45,11 @@ def main():
   
   if(args[0]=="create"):
     
+    #make sure there is a key folder
+    dir=os.path.dirname(keyFileName)
+    if not os.path.exists(dir):
+      os.makedirs(dir)
+    
     #make a keypair
     #ssh-keygen -q -t dsa -C ${name} -f $keyname -N '' 2>/dev/null
     if os.path.isfile(keyFileName):
